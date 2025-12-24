@@ -1,0 +1,50 @@
+{
+  "name": "vignan-event-review-system",
+  "version": "1.0.0",
+  "description": "A comprehensive web application for managing and reviewing various events at Vignan's Institute of Information Technology",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8080 -c-1",
+    "dev": "http-server -p 3000 -c-1",
+    "build": "echo 'No build process required for static HTML'",
+    "test": "echo 'No tests specified'",
+    "deploy": "firebase deploy",
+    "serve": "firebase serve"
+  },
+  "keywords": [
+    "education",
+    "event-management",
+    "college",
+    "vignan-institute",
+    "review-system",
+    "responsive-design",
+    "web-application"
+  ],
+  "author": "Vignan's Institute of Information Technology",
+  "license": "MIT",
+  "homepage": "https://vignan.ac.in",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vignan-institute/event-review-system.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vignan-institute/event-review-system/issues"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "firebase-tools": "^12.9.1"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.1",
+    "docx": "^8.5.0"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

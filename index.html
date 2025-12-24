@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Report Generation System</title>
+    
+    <!-- External CSS Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- External JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@7.8.2/build/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="logo-container">
+            <div id="lottie-animation" style="width: 180px; height: 180px; margin: 0 auto;"></div>
+        </div>
+    </div>
+
+   <!-- Header -->
+<header class="header">
+  <div class="header-logo">
+    <img src="assets/images/vignan_logo_header.jpg" alt="Logo" class="logo-img">
+    <div class="header-title">Vignan's Event Report Generation System</div>
+  </div>
+</header>
+
+
+    <!-- Main Content -->
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <nav class="sidebar w-64 p-4 space-y-4">
+            <ul class="space-y-2">
+                <li>
+                    <button onclick="showSection('home')" class="w-full text-left px-4 py-2 rounded-lg sidebar-hover">
+                        <i class="fas fa-home mr-2"></i> Home
+                    </button>
+                </li>
+                <li>
+                    <button onclick="toggleDropdown('curricular')" class="w-full text-left px-4 py-2 rounded-lg sidebar-hover">
+                        <i class="fas fa-book mr-2"></i> Curricular <i class="fas fa-chevron-down float-right"></i>
+                    </button>
+                    <ul id="curricular-dropdown" class="hidden pl-6 mt-2 space-y-1">
+                        <li><button onclick="selectEvent('Classroom lectures (Theory)')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Classroom lectures (Theory)</button></li>
+                        <li><button onclick="selectEvent('Laboratory sessions')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Laboratory sessions</button></li>
+                        <li><button onclick="selectEvent('Tutorials/Problem-solving sessions')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Tutorials/Problem-solving sessions</button></li>
+                        <li><button onclick="selectEvent('Mini/Major Projects')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Mini/Major Projects</button></li>
+                        <li><button onclick="selectEvent('Internships (Credit-based)')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Internships (Credit-based)</button></li>
+                        <li><button onclick="selectEvent('Industrial visits (Curriculum-embedded)')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Industrial visits (Curriculum-embedded)</button></li>
+                        <li><button onclick="selectEvent('Curriculum-based MOOC/SWAYAM/NPTEL courses')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Curriculum-based MOOC/SWAYAM/NPTEL courses</button></li>
+                        <li><button onclick="selectEvent('Internal & External Examinations')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Internal & External Examinations</button></li>
+                    </ul>
+                </li>
+                <li>
+                    <button onclick="toggleDropdown('co-curricular')" class="w-full text-left px-4 py-2 rounded-lg sidebar-hover">
+                        <i class="fas fa-laptop-code mr-2"></i> Co-curricular <i class="fas fa-chevron-down float-right"></i>
+                    </button>
+                    <ul id="co-curricular-dropdown" class="hidden pl-6 mt-2 space-y-1">
+                        <li><button onclick="selectEvent('Coding competitions / Hackathons')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Coding competitions / Hackathons</button></li>
+                        <li><button onclick="selectEvent('Technical clubs (IEEE, CSI, SAE)')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Technical clubs (IEEE, CSI, SAE)</button></li>
+                        <li><button onclick="selectEvent('Guest lectures & Expert talks')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Guest lectures & Expert talks</button></li>
+                        <li><button onclick="selectEvent('Industrial visits (Beyond curriculum)')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Industrial visits (Beyond curriculum)</button></li>
+                        <li><button onclick="selectEvent('Project exhibitions')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Project exhibitions</button></li>
+                        <li><button onclick="selectEvent('Patent filing workshops')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Patent filing workshops</button></li>
+                        <li><button onclick="selectEvent('Entrepreneurship & Innovation activities')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Entrepreneurship & Innovation activities</button></li>
+                        <li><button onclick="selectEvent('Certification programs (Python, AI, CAD)')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Certification programs (Python, AI, CAD)</button></li>
+                        <li><button onclick="selectEvent('Research paper writing & Publishing')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Research paper writing & Publishing</button></li>
+                        <li><button onclick="selectEvent('Technical paper presentations')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Technical paper presentations</button></li>
+                    </ul>
+                </li>
+                <li>
+                    <button onclick="toggleDropdown('extra-curricular')" class="w-full text-left px-4 py-2 rounded-lg sidebar-hover">
+                        <i class="fas fa-futbol mr-2"></i> Extra-curricular <i class="fas fa-chevron-down float-right"></i>
+                    </button>
+                    <ul id="extra-curricular-dropdown" class="hidden pl-6 mt-2 space-y-1">
+                        <li><button onclick="selectEvent('Sports competitions')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Sports competitions</button></li>
+                        <li><button onclick="selectEvent('Cultural fests & Annual day')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Cultural fests & Annual day</button></li>
+                        <li><button onclick="selectEvent('NSS/NCC activities')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">NSS/NCC activities</button></li>
+                        <li><button onclick="selectEvent('Yoga & Wellness programs')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Yoga & Wellness programs</button></li>
+                        <li><button onclick="selectEvent('Literary competitions (Debate, Poetry)')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Literary competitions (Debate, Poetry)</button></li>
+                        <li><button onclick="selectEvent('Art & Craft exhibitions')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Art & Craft exhibitions</button></li>
+                        <li><button onclick="selectEvent('Photography & Theatre clubs')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Photography & Theatre clubs</button></li>
+                        <li><button onclick="selectEvent('Social service projects')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Social service projects</button></li>
+                        <li><button onclick="selectEvent('Environmental awareness drives')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">Environmental awareness drives</button></li>
+                        <li><button onclick="selectEvent('National/International Day celebrations')" class="w-full text-left px-4 py-1 rounded-lg sidebar-hover text-sm">National/International Day celebrations</button></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content flex-1 p-6">
+            <!-- Home Section -->
+            <div id="home-section" class="form-section active">
+                <div class="card p-6">
+                    <h2 class="text-2xl font-bold text-center mb-6">
+                     <div class ="random"> Welcome to Vignan&#39;s Event Report Generation System</div>
+                    </h2>
+                    <div class="carousel mb-6">
+                        <div class="carousel-inner" id="carouselInner">
+                            <div class="carousel-item">
+                                <img src="assets\images\vignan logo 4.jpg" alt="Academic Presentations">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="assets/images/vignan logo 2.jpg" alt="Achievement Recognition">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="assets/images/vignan logo 5.jpg" alt="Innovation Programs">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="assets/images/vignan logo 1.jpg" alt="Community Service">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="assets/images/vignan logo 3.jpg" alt="Community Service">
+                            </div>
+                        </div>
+                        <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" id="carouselDots"></div>
+                    </div>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/DqCDVElxaL8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/EB0AVr-gujs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/Kn1KQYIu9qE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="about-college">
+                    <h2>About Our College</h2>
+                    <p>
+                        Our institution is committed to excellence in education, research, and innovation.
+                        We provide a vibrant learning environment with state-of-the-art facilities and a focus on
+                        holistic development.
+                    </p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt text-accent"></i>
+                            <span>Beside VSEZ, Duvvada, Vadlapudi Post, Gajuwaka, Visakhapatnam - 530 049.</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone text-accent"></i>
+                            <span>+91 12345 67890</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope text-accent"></i>
+                            <span>contact@viit.ac.in</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-globe text-accent"></i>
+                            <span>https://vignaniit.edu.in/</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Section -->
+            <div id="event-section" class="form-section hidden">
+                <div class="card p-6">
+                    <h2 class="text-xl font-bold mb-4">Event Report Form</h2>
+                    <form id="event-form" class="space-y-4">
+                        <!-- Date and Time -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Date <span class="text-red-500">*</span></label>
+                                <input type="date" name="eventDate" required class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Time <span class="text-red-500">*</span></label>
+                                <input type="text" name="eventTime" id="eventTimePicker" required class="form-input" placeholder="Select Time">
+                            </div>
+                        </div>
+                        <!-- Name of the Event (Auto-filled) -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Name of the Event <span class="text-red-500">*</span></label>
+                            <input type="text" name="eventName" id="eventName" required class="form-input">
+                        </div>
+                        <!-- Venue -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Venue <span class="text-red-500">*</span></label>
+                            <input type="text" name="venue" required class="form-input">
+                        </div>
+                        <!-- Resource Person -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Name of the Resource Person <span class="text-red-500">*</span></label>
+                            <textarea name="resourcePerson" required rows="2" class="form-input"></textarea>
+                        </div>
+                        <!-- Participants -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">No of Students Participated <span class="text-red-500">*</span></label>
+                                <input type="number" name="students" required min="0" class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">No of Faculty Participated</label>
+                                <input type="number" name="faculty" min="0" class="form-input">
+                            </div>
+                        </div>
+                        <!-- Event Coordinator -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Name of the Event Coordinator <span class="text-red-500">*</span></label>
+                            <input type="text" name="eventCoordinator" required class="form-input">
+                        </div>
+                        <!-- Organised by -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Organised by <span class="text-red-500">*</span></label>
+                            <input type="text" name="organisedBy" required class="form-input">
+                        </div>
+                    <!-- Signature Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Signature field 1</label>
+                            <select name="signatureField1" class="form-input">
+                                <option value="Not applicable">Not applicable</option>
+                                <option value="Event Coordinator">Event Coordinator</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Signature field 2</label>
+                            <select name="signatureField2" class="form-input">
+                                <option value="Not applicable">Not applicable</option>
+                                <option value="HOD">HOD</option>
+                                <option value="Dean IQAC">Dean IQAC</option>
+                                <option value="Dean Admin">Dean Admin</option>
+                                <option value="Dean Admissions">Dean Admissions</option>
+                                <option value="Dean Infrastructure">Dean Infrastructure</option>
+                                <option value="Dean Student Affairs">Dean Student Affairs</option>
+                                <option value="Dean International SA">Dean International SA</option>
+                                <option value="Dean Faculty Affairs">Dean Faculty Affairs</option>
+                                <option value="Dean Academics">Dean Academics</option>
+                                 <option value="Dean Evaluation">Dean Evaluation</option>
+                                 <option value="Dean R&D">Dean R&D</option>
+                                <option value="Dean Industry Relations">Dean Industry Relations</option>
+                                <option value="Dean T&P">Dean T&P</option>
+                               
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Signature field 3</label>
+                            <select name="signatureField3" class="form-input">
+                                <option value="Not applicable">Not applicable</option>
+                                <option value="Principal">Principal</option>
+                            </select>
+                        </div>
+                    </div>
+                        <!-- Circular Details -->
+                        <div class="border-t pt-4 mt-4">
+                            <h3 class="font-semibold mb-2 section-title">Circular Details</h3>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Recipient <span class="text-red-500">*</span></label>
+                                <input type="text" name="recipient" required class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Body of the Letter <span class="text-red-500">*</span></label>
+                                <textarea name="letterBody" required rows="3" class="form-input"></textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Venue <span class="text-red-500">*</span></label>
+                                    <input type="text" name="circularVenue" required class="form-input">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Time <span class="text-red-500">*</span></label>
+                                    <input type="text" name="circularTime" id="circularTimePicker" required class="form-input" placeholder="Select Time">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Event Coordinator <span class="text-red-500">*</span></label>
+                                    <input type="text" name="circularCoordinator" required class="form-input">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Student Coordinator</label>
+                                    <input type="text" name="studentCoordinator" class="form-input">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Copy To</label>
+                                <textarea name="copyTo" rows="2" class="form-input"></textarea>
+                            </div>
+                        </div>
+                        <!-- Event Details -->
+                        <div class="border-t pt-4 mt-4">
+                            <h3 class="font-semibold mb-2 section-title">Event Details</h3>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">In Association With</label>
+                                <input type="text" name="inAssociationWith" class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Brochure</label>
+                                <input type="file" name="brochure" id="brochure-upload" accept="image/*" class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">About the Event <span class="text-red-500">*</span></label>
+                                <textarea name="aboutEvent" id="aboutEvent" required rows="3" class="form-input"></textarea>
+                                
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Geo-Tagged Photos</label>
+                                <input type="file" name="geoPhotos" id="geo-photos-upload" accept="image/*" multiple class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">News Paper Cutting</label>
+                                <input type="file" name="newsPaper" id="news-paper-upload" accept="image/*" multiple class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">List of Students Participated (Excel)</label>
+                                <input type="file" name="studentList" id="studentlist-upload" accept=".xlsx,.xls" class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">List of Faculty Participated (Excel)</label>
+                                <input type="file" name="facultyList" id="facultylist-upload" accept=".xlsx,.xls" class="form-input">
+                            </div>
+                        </div>
+                        <!-- Generate Report Button -->
+                        <div class="text-center">
+                            <button type="button" onclick="generateReport()" class="btn btn-primary px-6 py-2">
+                                <i class="fas fa-file-alt mr-1"></i> Generate Report
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div id="preview-section" class="hidden">
+                <div class="card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold">Event Report Preview</h2>
+                        <div class="space-x-2">
+                            <button onclick="generateAndDownloadPDF()" class="btn btn-primary px-4 py-2">
+                                <i class="fas fa-file-pdf mr-2"></i> Download PDF
+                            </button>
+                            <button onclick="downloadWord()" class="btn btn-primary px-4 py-2">
+                                <i class="fas fa-file-word mr-2"></i> Download Word
+                            </button>
+                            <button onclick="editReport()" class="btn btn-accent px-4 py-2">
+                                <i class="fas fa-edit mr-2"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div id="preview-content" class="pdf-preview"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+    <script src="js/fileHandler.js"></script>
+    <script src="js/reportGenerator.js"></script>
+    <script src="js/exportUtils.js"></script>
+</body>
+</html>
